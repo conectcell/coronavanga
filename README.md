@@ -5,7 +5,7 @@ It is made just for learning purposes and fun.
 It doesn't predict data 100% accurately.
 
 
-First you have to install python, pip, keras and tensorflow, pandas, numpy.
+First you have to install python, pip, keras, tensorflow, pandas and numpy.
 
 
 
