@@ -12,6 +12,8 @@ First you have to install python, pip, keras and tensorflow, pandas, numpy.
 download.py downloads data from https://github.com/CSSEGISandData/COVID-19 end extracts it to data folder
 
 lstm.py - is actual LSTM neural network with several LSTM layers
+
+
 bidirectional.py - bidirectional LSTM with one layer
 
 
