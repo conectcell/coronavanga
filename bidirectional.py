@@ -72,5 +72,7 @@ model.fit(X, Y, epochs=2000, validation_split=0.2, verbose=1, batch_size=5)
 test_input = array([all[-1]])
 test_input = test_input.reshape((1, 1, 1))
 test_output = model.predict(test_input, verbose=0)
-print(test_output)
-print(test_output*200000)
+
+
+res = round((test_output*200000)[0][0]).astype(int)
+print("Tomorrow infected number: " + res.astype(str))
