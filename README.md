@@ -2,10 +2,10 @@
 LSTM for coronavirus spreading prediction
 
 It is made just for learning purposes and fun.
-It doesn't predict accurately and data.
+It doesn't predict data 100% accurately.
 
 
-First you have to install Python, Keras and Tensorflow
+First you have to install python, pip, keras and tensorflow, pandas, numpy.
 
 
 
@@ -14,4 +14,5 @@ download.py downloads data from https://github.com/CSSEGISandData/COVID-19 end e
 lstm.py - is actual LSTM neural network with several LSTM layers
 bidirectional.py - bidirectional LSTM with one layer
 
-make sure that you have pandas, numpy,
+
+Have fun.
