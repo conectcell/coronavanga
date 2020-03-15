@@ -2,7 +2,7 @@ import os
 import urllib.request
 import zipfile
 
-if not os.path.exists('.download'):
+if not os.path.exists('./download'):
     os.makedirs('./download')
 
 
