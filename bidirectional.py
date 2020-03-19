@@ -1,3 +1,4 @@
+'exec(%matplotlib inline)'
 from os import listdir
 from os.path import isfile, join
 import pandas as pd
@@ -33,36 +34,44 @@ df['Deaths'] = df['Deaths'].astype(int)
 
 work = df.groupby('Date', as_index=False)['Confirmed'].sum()
 all = np.array(work['Confirmed'], dtype=float)
-nornmalizer = all.max() * 1.5 
+optimizer = all.max() / (all.max() / all.mean())
+print(optimizer)
+all /= optimizer
 
-all /= nornmalizer
 
+print(all)
 
 
 X = all[1:]
-Y = all[:-1]
+y = all[:-1]
 
 
 
 
 from numpy import array
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation, Dropout, Dense
-from tensorflow.keras.layers import Flatten, LSTM
-from tensorflow.keras.layers import Bidirectional
+from keras.models import Sequential
+from keras.layers.core import Activation, Dropout, Dense
+from keras.layers import Flatten, LSTM
+from keras.layers import Bidirectional
+
+
+
+
+
+
+
 
 X = array(X).reshape(len(X), 1, 1)
 
 
+
 model = Sequential()
-model.add(Bidirectional(LSTM(50, activation='relu'), input_shape=(1, 1)))
+model.add(Bidirectional(LSTM(200, activation='relu'), input_shape=(1, 1)))
 model.add(Dense(1))
-model.compile(optimizer='adam', loss='mse')
+model.compile(optimizer='Nadam', loss='mse', metrics = ['accuracy'])
 print(model.summary())
-
-
-
-model.fit(X, Y, epochs=2000, validation_split=0.2, verbose=1, batch_size=5)
+model.fit(X, y, epochs=500, validation_split=0.2, verbose=1, batch_size=8)
+#scores = model.evaluate(X_test, y_test)
 
 
 test_input = array([all[-1]])
@@ -70,7 +79,6 @@ test_input = test_input.reshape((1, 1, 1))
 test_output = model.predict(test_input, verbose=0)
 
 
-print(nornmalizer)
+res = test_output * optimizer
+print(res)
 
-res = round((test_output*nornmalizer)[0][0]).astype(int)
-print("Tomorrow infected number: " + res.astype(str))
