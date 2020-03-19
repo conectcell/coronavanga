@@ -54,9 +54,9 @@ from keras.models import Sequential
 from keras.layers import Dense,Bidirectional, LSTM
 from keras.wrappers.scikit_learn import KerasClassifier
 
-def create_model(optimizer, activation):
+def create_model(optimizer, activation, type):
     model = Sequential()
-    model.add(Bidirectional(LSTM(50, activation=activation), input_shape=(1, 1)))
+    model.add(Bidirectional(LSTM(type, activation=activation), input_shape=(1, 1)))
     model.add(Dense(1))
     model.compile(optimizer = optimizer, loss='mse', metrics=['accuracy'])
     return model
@@ -71,14 +71,14 @@ np.random.seed(seed)
 model = KerasClassifier(build_fn=create_model, verbose=0)
 batch_size = [1,2, 5, 10, 20]
 epochs = [10, 50, 100, 1000, 2000, 2500 ]
-optimizer =  ['adam', 'rmsprop', 'softmax']
 
 
 param_grid = dict(batch_size=batch_size, epochs=epochs)
 
 
-parameters = {'batch_size': [1, 2, 5, 10, 20],
-              'epochs': [10, 50, 100 ],
+parameters = {'batch_size': [x+1 for x in range(20)],
+              'epochs': [5, 10, 20, 50, 100, 500, 1000, 2000 ],
+              'type': [50, 100, 200 ],
               'optimizer': ['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam'],
               'activation': ['relu','sigmoid','tanh','elu','selu']
               }
@@ -90,5 +90,3 @@ print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
 means = grid_result.cv_results_['mean_test_score']
 stds = grid_result.cv_results_['std_test_score']
 params = grid_result.cv_results_['params']
-for mean, stdev, param in zip(means, stds, params):
-    print("%f (%f) with: %r" % (mean, stdev, param))
