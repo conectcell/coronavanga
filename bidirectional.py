@@ -1,4 +1,3 @@
-'exec(%matplotlib inline)'
 from os import listdir
 from os.path import isfile, join
 import pandas as pd
@@ -34,7 +33,9 @@ df['Deaths'] = df['Deaths'].astype(int)
 
 work = df.groupby('Date', as_index=False)['Confirmed'].sum()
 all = np.array(work['Confirmed'], dtype=float)
-all /= 200000
+nornmalizer = all.max() * 1.5 
+
+all /= nornmalizer
 
 
 
@@ -45,15 +46,10 @@ Y = all[:-1]
 
 
 from numpy import array
-from keras.models import Sequential
-from keras.layers.core import Activation, Dropout, Dense
-from keras.layers import Flatten, LSTM
-from keras.layers import Bidirectional
-
-
-print(X)
-print(Y)
-
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Activation, Dropout, Dense
+from tensorflow.keras.layers import Flatten, LSTM
+from tensorflow.keras.layers import Bidirectional
 
 X = array(X).reshape(len(X), 1, 1)
 
@@ -74,5 +70,7 @@ test_input = test_input.reshape((1, 1, 1))
 test_output = model.predict(test_input, verbose=0)
 
 
-res = round((test_output*200000)[0][0]).astype(int)
+print(nornmalizer)
+
+res = round((test_output*nornmalizer)[0][0]).astype(int)
 print("Tomorrow infected number: " + res.astype(str))
